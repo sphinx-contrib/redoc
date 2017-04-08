@@ -56,9 +56,13 @@ def render(app):
 
 
 def assets(app, exception):
-    copyfile(
-        os.path.join(here, 'redoc.js'),
-        os.path.join(app.builder.outdir, '_static', 'redoc.js'))
+    # Since '_static' directory may not exist in case of failed build, we
+    # need to either ensure its existence here or do not try to copy  assets
+    # in case of failure.
+    if not exception:
+        copyfile(
+            os.path.join(here, 'redoc.js'),
+            os.path.join(app.builder.outdir, '_static', 'redoc.js'))
 
 
 def setup(app):
