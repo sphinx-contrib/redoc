@@ -24,7 +24,7 @@ setup(
     zip_safe=False,
     use_scm_version=True,
     setup_requires=[
-        'setuptools_scm < 1.15.3',
+        'setuptools_scm',
     ],
     install_requires=[
         'jinja2 >= 2.4',
