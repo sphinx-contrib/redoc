@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{{ name | default('API documentation') }}</title>
+    <meta charset="{{ encoding | default('utf-8') }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body { margin: 0; padding: 0; }
+    </style>
+  </head>
+  <body>
+    <redoc spec-url="{{ pathto(spec, 1) }}"></redoc>
+    <script src="{{ pathto('_static/redoc.js', 1) }}"></script>
+  </body>
+</html>

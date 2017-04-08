@@ -1,0 +1,12 @@
+include README.rst CHANGES.rst LICENSE
+include tox.ini
+
+recursive-include docs *
+recursive-include tests *
+recursive-include sphinxcontrib *.js *.css *.j2
+
+prune docs/_build
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
