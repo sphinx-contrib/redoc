@@ -1,6 +1,11 @@
 sphinxcontrib-redoc
 ===================
 
+.. hint::
+
+    Check out `sphinxcontrib-openapi`_ if you are interested in rendering
+    OpenAPI spec within Sphinx page (i.e. inline).
+
 .. image:: _static/logo.png
    :width: 200
    :align: right
@@ -97,3 +102,4 @@ Links
 .. _OpenAPI: https://openapis.org/
 .. _ReDoc: https://github.com/Rebilly/ReDoc
 .. _the proof: api/github/
+.. _sphinxcontrib-openapi: https://sphinxcontrib-openapi.readthedocs.io/
