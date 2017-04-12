@@ -26,6 +26,15 @@ with io.open(os.path.join(here, 'redoc.j2'), 'r', encoding='utf-8') as f:
 
 def render(app):
     for ctx in app.config.redoc:
+        # Setup options if they are not passed since 'redoc.j2' template
+        # relies on them.
+        ctx.setdefault('opts', {})
+        ctx['opts'].setdefault('lazy-rendering', False)
+        ctx['opts'].setdefault('suppress-warnings', False)
+        ctx['opts'].setdefault('hide-hostname', False)
+        ctx['opts'].setdefault('required-props-first', False)
+        ctx['opts'].setdefault('expand-responses', [])
+
         # The 'spec' may contain either HTTP(s) link or filesystem path. In
         # case of later we need to copy the spec into output directory, as
         # otherwise it won't be available when the result is deployed.

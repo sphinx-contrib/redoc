@@ -1,3 +1,16 @@
+1.1.0 (2017-04-12)
+``````````````````
+
+- Add support for the following ReDoc options:
+
+  - ``lazy-rendering``
+  - ``suppress-warnings``
+  - ``hide-hostname``
+  - ``required-props-first``
+  - ``expand-responses``
+
+  [:issue:`4`, :pr:`5`]
+
 1.0.1 (2017-04-10)
 ``````````````````
 

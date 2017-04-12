@@ -21,6 +21,9 @@ redoc = [
         'name': 'Github API (v3)',
         'page': 'api/github/index',
         'spec': '_specs/github.yml',
+        'opts': {
+            'lazy-rendering': True
+        },
     },
 ]
 
