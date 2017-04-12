@@ -44,8 +44,9 @@ def test_redocjs_page_is_generated(sphinxdocs):
 
     html = outdir.join('api', 'github', 'index.html').read()
     patterns = [
-        r'<redoc spec-url="../../_specs/github.yml"></redoc>',
-        r'<script src="../../_static/redoc.js">',
+        r'<redoc spec-url="../../_specs/github.yml"\s+lazy-rendering\s+'
+        r'expand-responses="">\s*</redoc>',
+        r'<script src="../../_static/redoc.js">\s*</script>',
     ]
 
     for pattern in patterns:
