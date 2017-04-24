@@ -2,6 +2,13 @@
 ``````````````````
 - Update ``redoc.js`` to ``1.14.0``. [:pr:`6`]
 
+- Add support for the following ReDoc options:
+
+  - ``no-auto-auth``
+  - ``path-in-middle-panel``
+
+  [:pr:`7`]
+
 1.1.0 (2017-04-12)
 ``````````````````
 
