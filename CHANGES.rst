@@ -1,3 +1,9 @@
+2.0.0a1 (unreleased)
+````````````````````
+
+- Update ``redoc.js`` to ``2.0.0-alpha.17``.
+- OpenAPI v3 support.
+
 1.4.0 (2018-03-24)
 ``````````````````
 
