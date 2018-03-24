@@ -98,6 +98,16 @@ do is to:
     ``expand-responses`` (default: ``[]``)
       A list of response codes to be expanded by default.
 
+    ``hide-loading`` (default: ``False``)
+      Do not show loading animation. Useful for small OpenAPI specs.
+
+    ``native-scrollbars`` (default: ``False``)
+      Use native scrollbar for sidemenu instead of perfect-scroll. May
+      dramatically improve performance on big OpenAPI specs.
+
+    ``untrusted-spec`` (default: ``False``)
+      If set, the spec is considered untrusted and all HTML/markdown is
+      sanitized to prevent XSS.
 
 Demo
 ----
@@ -124,7 +134,7 @@ Changes
 Links
 -----
 
-* Documentation: https://sphinxcontrib-redoc.readthedocs.org/
+* Documentation: https://sphinxcontrib-redoc.readthedocs.io/
 * Source: https://github.com/ikalnytskyi/sphinxcontrib-redoc
 * Bugs: https://github.com/ikalnytskyi/sphinxcontrib-redoc/issues
 

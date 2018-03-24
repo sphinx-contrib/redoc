@@ -3,6 +3,13 @@
 
 - Update ``redoc.js`` to ``1.21.2``. [:pr:`10`]
 
+- Add support for the following ReDoc options:
+
+  - ``hide-loading``
+  - ``native-scrollbars``
+  - ``untrusted-spec``
+
+  [:pr:`10`]
 
 1.3.0 (2017-05-12)
 ``````````````````

@@ -16,7 +16,10 @@
            {{ 'required-props-first' if opts['required-props-first'] }}
            {{ 'no-auto-auth' if opts['no-auto-auth'] }}
            {{ 'path-in-middle-panel' if opts['path-in-middle-panel'] }}
-           {{ 'expand-responses="%s"' % ','.join(opts['expand-responses']) }}>
+           {{ 'hide-loading' if opts['hide-loading'] }}
+           {{ 'native-scrollbars' if opts['native-scrollbars'] }}
+           {{ 'untrusted-spec' if opts['untrusted-spec'] }}
+           {{ 'expand-responses="%s"' % ','.join(opts['expand-responses']) if opts['expand-responses'] }}>
     </redoc>
     <script src="{{ pathto('_static/redoc.js', 1) }}"></script>
   </body>
