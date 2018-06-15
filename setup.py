@@ -30,6 +30,7 @@ setup(
         'jinja2 >= 2.4',
         'sphinx >= 1.5',
         'six >= 1.5',
+        'PyYAML >= 3.12',
     ],
     classifiers=[
         'Topic :: Documentation',
