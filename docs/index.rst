@@ -117,6 +117,12 @@ do is to:
       If set, the spec is considered untrusted and all HTML/markdown is
       sanitized to prevent XSS.
 
+* if you are not ok with default version, specify the one you want to use
+
+  .. code:: python
+
+      redoc_uri = 'https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js'
+
 Demo
 ----
 

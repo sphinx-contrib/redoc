@@ -2,7 +2,13 @@
 ``````````````````
 
 - New ``embed`` option. When ``True``, the spec will be embedded into the
-  rendered HTML page. Thanks `@etene <https://github.com/etene>`_.  [:pr:`14`]
+  rendered HTML page. Thanks `@etene <https://github.com/etene>`_.
+
+  [:pr:`14`]
+
+- Add ``redoc_uri`` Sphinx option to override default ``redoc.js``.
+
+  [:issue:`13`, :pr:`16`]
 
 1.4.0 (2018-03-24)
 ``````````````````
@@ -24,6 +30,7 @@
 
 1.2.0 (2017-04-24)
 ``````````````````
+
 - Update ``redoc.js`` to ``1.14.0``. [:pr:`6`]
 
 - Add support for the following ReDoc options:
