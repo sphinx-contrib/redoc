@@ -32,40 +32,39 @@ def render(app):
         # relies on them.
         ctx.setdefault('opts', {})
 
-        # "Offline" mode: the JSON spec is embedded in the page
+        # "Embed" mode: the JSON spec is embedded in the page
         # TODO: only works for local files: add remote files download ?
-        if ctx.get('offline') is True:
+        if ctx.get('embed') is True:
             # Parse & dump the spec to have it as properly formatted json
             with io.open(os.path.join(app.confdir, ctx['spec'])) as specfp:
-                # Dumb heuristic
-                parser_module = json if ctx['spec'].endswith("json") else yaml
                 try:
-                    spec_contents = parser_module.load(specfp)
+                    spec_contents = yaml.load(specfp)
                 except ValueError as ver:
                     raise ValueError('Cannot parse spec %r: %s'
                                      % (ctx['spec'], ver))
 
                 ctx['spec'] = json.dumps(spec_contents)
-        else:
-            # The 'spec' may contain either HTTP(s) link or filesystem path. In
-            # case of later we need to copy the spec into output directory, as
-            # otherwise it won't be available when the result is deployed.
-            if not ctx['spec'].startswith(('http', 'https')):
-                specpath = os.path.join(app.builder.outdir, '_specs')
-                specname = os.path.basename(ctx['spec'])
 
-                ensuredir(specpath)
+        # The 'spec' may contain either HTTP(s) link or filesystem path. In
+        # case of later we need to copy the spec into output directory, as
+        # otherwise it won't be available when the result is deployed.
+        elif not ctx['spec'].startswith(('http', 'https')):
 
-                copyfile(
-                    # Since the path may be relative it should be joined with
-                    # base URI which is a path of directory with conf.py in
-                    # our case.
-                    os.path.join(app.confdir, ctx['spec']),
-                    os.path.join(specpath, specname))
+            specpath = os.path.join(app.builder.outdir, '_specs')
+            specname = os.path.basename(ctx['spec'])
 
-                # The link inside the rendered document must refer to a new
-                # location, the place where it has been copied to.
-                ctx['spec'] = os.path.join('_specs', specname)
+            ensuredir(specpath)
+
+            copyfile(
+                # Since the path may be relative it should be joined with
+                # base URI which is a path of directory with conf.py in
+                # our case.
+                os.path.join(app.confdir, ctx['spec']),
+                os.path.join(specpath, specname))
+
+            # The link inside the rendered document must refer to a new
+            # location, the place where it has been copied to.
+            ctx['spec'] = os.path.join('_specs', specname)
 
         # Propagate information about page rendering to Sphinx. There's
         # a little trick in here: we pass an actual Jinja2 template instance

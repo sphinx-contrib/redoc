@@ -144,14 +144,17 @@ def test_redocjs_page_is_generated(run_sphinx, tmpdir, options, attributes):
     html = tmpdir.join('out').join('api', 'github', 'index.html').read()
     soup = bs4.BeautifulSoup(html, 'html.parser')
 
+    # spec url is passed directly as the first arg to the redoc init
+    del attributes["spec-url"]
+
     assert soup.title.string == 'Github API (v3)'
     assert soup.redoc.attrs == attributes
     assert soup.script.attrs['src'] == os.path.join(
         '..', '..', '_static', 'redoc.js')
 
 
-def test_offline_embedded_js(run_sphinx, tmpdir):
-    run_sphinx({}, conf={'offline': True})
+def test_embedded_spec(run_sphinx, tmpdir):
+    run_sphinx({}, conf={'embed': True})
     html = tmpdir.join('out').join('api', 'github', 'index.html').read()
     specfile = tmpdir.join('src', '_specs', 'github.yml')
     soup = bs4.BeautifulSoup(html, 'html.parser')
