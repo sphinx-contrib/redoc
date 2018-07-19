@@ -32,11 +32,13 @@ def render(app):
         # relies on them.
         ctx.setdefault('opts', {})
 
-        # "Embed" mode: the JSON spec is embedded in the page
-        # TODO: only works for local files: add remote files download ?
+        # In embed mode, we are going to embed the whole OpenAPI spec into
+        # produced HTML. The rationale is very simple: we want to produce
+        # browsable HTMLs ready to be used without any web server.
         if ctx.get('embed') is True:
             # Parse & dump the spec to have it as properly formatted json
-            with io.open(os.path.join(app.confdir, ctx['spec'])) as specfp:
+            specfile = os.path.join(app.confdir, ctx['spec'])
+            with io.open(specfile, encoding='utf-8') as specfp:
                 try:
                     spec_contents = yaml.load(specfp)
                 except ValueError as ver:

@@ -1,6 +1,5 @@
 import os
 import textwrap
-import pprint
 import yaml
 import json
 import py
@@ -41,7 +40,7 @@ def run_sphinx(tmpdir):
             source_suffix = '.rst'
             master_doc = 'index'
             redoc = {{ redoc }}
-        ''')).render(redoc=pprint.pformat([defaultconf]))
+        ''')).render(redoc=[defaultconf])
 
         src.join('conf.py').write_text(confpy, encoding='utf-8')
         src.join('index.rst').ensure()
