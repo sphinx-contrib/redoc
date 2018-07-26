@@ -29,7 +29,11 @@
     </script>
     {% endif %}
     <script>
-        var spec = {{ 'JSON.parse(document.getElementById("spec").innerHTML)' if embed else spec }}
+        {% if embed %}
+        var spec = JSON.parse(document.getElementById("spec").innerHTML);
+        {% else %}
+        var spec = "{{ spec }}";
+        {% endif %}
         Redoc.init(spec);
     </script>
   </body>
