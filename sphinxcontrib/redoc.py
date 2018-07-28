@@ -11,6 +11,8 @@
 
 import io
 import os
+import json
+import yaml
 
 import jinja2
 import pkg_resources
@@ -30,10 +32,26 @@ def render(app):
         # relies on them.
         ctx.setdefault('opts', {})
 
+        # In embed mode, we are going to embed the whole OpenAPI spec into
+        # produced HTML. The rationale is very simple: we want to produce
+        # browsable HTMLs ready to be used without any web server.
+        if ctx.get('embed') is True:
+            # Parse & dump the spec to have it as properly formatted json
+            specfile = os.path.join(app.confdir, ctx['spec'])
+            with io.open(specfile, encoding='utf-8') as specfp:
+                try:
+                    spec_contents = yaml.load(specfp)
+                except ValueError as ver:
+                    raise ValueError('Cannot parse spec %r: %s'
+                                     % (ctx['spec'], ver))
+
+                ctx['spec'] = json.dumps(spec_contents)
+
         # The 'spec' may contain either HTTP(s) link or filesystem path. In
         # case of later we need to copy the spec into output directory, as
         # otherwise it won't be available when the result is deployed.
-        if not ctx['spec'].startswith(('http', 'https')):
+        elif not ctx['spec'].startswith(('http', 'https')):
+
             specpath = os.path.join(app.builder.outdir, '_specs')
             specname = os.path.basename(ctx['spec'])
 
@@ -46,8 +64,8 @@ def render(app):
                 os.path.join(app.confdir, ctx['spec']),
                 os.path.join(specpath, specname))
 
-            # The link inside rendered document must refer to a new location,
-            # the place where it has being copied to.
+            # The link inside the rendered document must refer to a new
+            # location, the place where it has been copied to.
             ctx['spec'] = os.path.join('_specs', specname)
 
         # Propagate information about page rendering to Sphinx. There's

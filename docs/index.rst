@@ -44,6 +44,7 @@ do is to:
               'name': 'Batcomputer API',
               'page': 'api',
               'spec': 'specs/batcomputer.yml',
+              'embed': True,
           },
           {
               'name': 'Example API',
@@ -73,6 +74,13 @@ do is to:
   ``spec``
     A path to an OpenAPI spec to be rendered. Can be either an HTTP(s)
     link to external source, or filesystem path relative to conf directory.
+
+  ``embed`` (default: ``False``)
+    If ``True``, the ``spec`` will be embedded into the rendered HTML page.
+    Useful for cases when a browsable API ready to be used without any web
+    server is needed.
+    The ``spec`` must be an ``UTF-8`` encoded JSON on YAML OpenAPI spec;
+    embedding an external ``spec`` is currently not supported.
 
   ``opts``
     An optional dictionary with some of ReDoc settings that might be

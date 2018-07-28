@@ -1,6 +1,7 @@
 import os
 import textwrap
-
+import yaml
+import json
 import py
 import pytest
 import pkg_resources
@@ -21,7 +22,14 @@ def run_sphinx(tmpdir):
     spec = py.path.local(here).join('..', 'docs', '_specs', 'github.yml')
     spec.copy(src.mkdir('_specs').join('github.yml'))
 
-    def run(conf):
+    def run(redoc_options, conf=None):
+        defaultconf = {'name': 'Github API (v3)',
+                       'page': 'api/github/index',
+                       'spec': '_specs/github.yml',
+                       }
+        if conf:
+            defaultconf.update(conf)
+        defaultconf['opts'] = redoc_options
         confpy = jinja2.Template(textwrap.dedent('''
             import os
 
@@ -31,21 +39,9 @@ def run_sphinx(tmpdir):
             extensions = ['sphinxcontrib.redoc']
             source_suffix = '.rst'
             master_doc = 'index'
-            redoc = [
-                {
-                    'name': 'Github API (v3)',
-                    'page': 'api/github/index',
-                    'spec': '_specs/github.yml',
-                    {% if opts is not none %}
-                    'opts': {
-                        {% for key, value in opts.items() %}
-                        '{{ key }}': {{ value }},
-                        {% endfor %}
-                    },
-                    {% endif %}
-                },
-            ]
-        ''')).render(opts=conf)
+            redoc = {{ redoc }}
+        ''')).render(redoc=[defaultconf])
+
         src.join('conf.py').write_text(confpy, encoding='utf-8')
         src.join('index.rst').ensure()
 
@@ -147,7 +143,25 @@ def test_redocjs_page_is_generated(run_sphinx, tmpdir, options, attributes):
     html = tmpdir.join('out').join('api', 'github', 'index.html').read()
     soup = bs4.BeautifulSoup(html, 'html.parser')
 
+    # spec url is passed directly as the first arg to the redoc init
+    del attributes["spec-url"]
+
     assert soup.title.string == 'Github API (v3)'
     assert soup.redoc.attrs == attributes
     assert soup.script.attrs['src'] == os.path.join(
         '..', '..', '_static', 'redoc.js')
+
+
+def test_embedded_spec(run_sphinx, tmpdir):
+    run_sphinx({}, conf={'embed': True})
+    html = tmpdir.join('out').join('api', 'github', 'index.html').read()
+    specfile = tmpdir.join('src', '_specs', 'github.yml')
+    soup = bs4.BeautifulSoup(html, 'html.parser')
+
+    with open(str(specfile)) as fp:
+        original_spec = yaml.load(fp)
+
+    embedded_spec = soup.find(id='spec').get_text()
+    # ensure the embedded spec is present and corresponds to the original
+    assert embedded_spec
+    assert json.loads(embedded_spec) == original_spec

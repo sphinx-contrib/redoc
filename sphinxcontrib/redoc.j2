@@ -9,7 +9,7 @@
     </style>
   </head>
   <body>
-    <redoc spec-url="{{ pathto(spec, 1) }}"
+    <redoc
            {{ 'lazy-rendering' if opts['lazy-rendering'] }}
            {{ 'suppress-warnings' if opts['suppress-warnings'] }}
            {{ 'hide-hostname' if opts['hide-hostname'] }}
@@ -21,6 +21,20 @@
            {{ 'untrusted-spec' if opts['untrusted-spec'] }}
            {{ 'expand-responses="%s"' % ','.join(opts['expand-responses']) if opts['expand-responses'] }}>
     </redoc>
+
     <script src="{{ pathto('_static/redoc.js', 1) }}"></script>
+    {% if embed %}
+    <script type="application/json" id="spec">
+    {{ spec }}
+    </script>
+    {% endif %}
+    <script>
+        {% if embed %}
+        var spec = JSON.parse(document.getElementById("spec").innerHTML);
+        {% else %}
+        var spec = "{{ spec }}";
+        {% endif %}
+        Redoc.init(spec);
+    </script>
   </body>
 </html>
