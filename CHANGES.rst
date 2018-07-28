@@ -1,4 +1,4 @@
-1.5.0 (unreleased)
+1.5.0 (2018-07-28)
 ``````````````````
 
 - New ``embed`` option. When ``True``, the spec will be embedded into the
