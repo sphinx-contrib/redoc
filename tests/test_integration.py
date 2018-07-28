@@ -1,7 +1,8 @@
 import os
 import textwrap
-import yaml
 import json
+
+import yaml
 import py
 import pytest
 import pkg_resources
@@ -22,7 +23,7 @@ def run_sphinx(tmpdir):
     spec = py.path.local(here).join('..', 'docs', '_specs', 'github.yml')
     spec.copy(src.mkdir('_specs').join('github.yml'))
 
-    def run(redoc_options, conf=None):
+    def run(redoc_options, conf=None, redoc_uri=None):
         defaultconf = {'name': 'Github API (v3)',
                        'page': 'api/github/index',
                        'spec': '_specs/github.yml',
@@ -40,7 +41,8 @@ def run_sphinx(tmpdir):
             source_suffix = '.rst'
             master_doc = 'index'
             redoc = {{ redoc }}
-        ''')).render(redoc=[defaultconf])
+            redoc_uri = {{ redoc_uri }}
+        ''')).render(redoc=[defaultconf], redoc_uri=repr(redoc_uri))
 
         src.join('conf.py').write_text(confpy, encoding='utf-8')
         src.join('index.rst').ensure()
@@ -66,6 +68,22 @@ def test_redocjs_lib_is_copied(run_sphinx, tmpdir):
     assert outdir.join('_static', 'redoc.js').check()
     assert outdir.join('_static', 'redoc.js').computehash() \
         == extdir.join('redoc.js').computehash()
+
+
+def test_redocjs_lib_is_downloaded(run_sphinx, tmpdir):
+    outdir = tmpdir.join('out')
+    extdir = py.path.local(
+        pkg_resources.get_provider('sphinxcontrib.redoc').module_path)
+
+    run_sphinx({}, redoc_uri=(
+        'https://cdn.jsdelivr.net/npm'
+        '/redoc@2.0.0-alpha.32/bundles/redoc.standalone.js'))
+
+    assert outdir.join('_static', 'redoc.js').check()
+    assert outdir.join('_static', 'redoc.js').computehash() \
+        != extdir.join('redoc.js').computehash()
+    assert outdir.join('_static', 'redoc.js').computehash() \
+        == '6978103258cab653263b5b75c008b474'
 
 
 def test_openapi_spec_is_copied(run_sphinx, tmpdir):

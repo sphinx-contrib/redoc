@@ -17,6 +17,7 @@ import yaml
 import jinja2
 import pkg_resources
 
+from six.moves import urllib
 from sphinx.util.osutil import copyfile, ensuredir
 
 
@@ -86,9 +87,19 @@ def assets(app, exception):
             os.path.join(here, 'redoc.js'),
             os.path.join(app.builder.outdir, '_static', 'redoc.js'))
 
+        # It's hard to keep up with ReDoc releases, especially when you don't
+        # watch them closely. Hence, there should be a way to override built-in
+        # ReDoc bundle with some upstream one.
+        if app.config.redoc_uri:
+            urllib.request.urlretrieve(
+                app.config.redoc_uri,
+                os.path.join(app.builder.outdir, '_static', 'redoc.js'))
+
 
 def setup(app):
     app.add_config_value('redoc', [], 'html')
+    app.add_config_value('redoc_uri', None, 'html')
+
     app.connect('html-collect-pages', render)
     app.connect('build-finished', assets)
 
