@@ -1,3 +1,9 @@
+1.5.0 (unreleased)
+``````````````````
+
+- New ``embed`` option. When ``True``, the spec will be embedded into the
+  rendered HTML page. Thanks `@etene <https://github.com/etene>`_.  [:pr:`14`]
+
 1.4.0 (2018-03-24)
 ``````````````````
 
