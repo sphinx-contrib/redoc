@@ -1,3 +1,10 @@
+1.5.1 (2018-08-05)
+``````````````````
+
+- Fix critical issue when relative path to an OpenAPI spec didn't work.
+
+  [:issue:`17`]
+
 1.5.0 (2018-07-28)
 ``````````````````
 

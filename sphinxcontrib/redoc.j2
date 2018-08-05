@@ -32,7 +32,7 @@
         {% if embed %}
         var spec = JSON.parse(document.getElementById("spec").innerHTML);
         {% else %}
-        var spec = "{{ spec }}";
+        var spec = "{{ pathto(spec, 1) }}";
         {% endif %}
         Redoc.init(spec);
     </script>

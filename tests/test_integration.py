@@ -97,10 +97,10 @@ def test_openapi_spec_is_copied(run_sphinx, tmpdir):
 
 @pytest.mark.parametrize('options, attributes', [
     (None,
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml')}),
+     {}),
 
     ({},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml')}),
+     {}),
 
     ({'lazy-rendering': False,
       'suppress-warnings': False,
@@ -112,47 +112,37 @@ def test_openapi_spec_is_copied(run_sphinx, tmpdir):
       'native-scrollbars': False,
       'untrusted-spec': False,
       'expand-responses': []},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml')}),
+     {}),
 
     ({'lazy-rendering': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'lazy-rendering': ''}),
+     {'lazy-rendering': ''}),
 
     ({'suppress-warnings': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'suppress-warnings': ''}),
+     {'suppress-warnings': ''}),
 
     ({'hide-hostname': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'hide-hostname': ''}),
+     {'hide-hostname': ''}),
 
     ({'required-props-first': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'required-props-first': ''}),
+     {'required-props-first': ''}),
 
     ({'no-auto-auth': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'no-auto-auth': ''}),
+     {'no-auto-auth': ''}),
 
     ({'path-in-middle-panel': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'path-in-middle-panel': ''}),
+     {'path-in-middle-panel': ''}),
 
     ({'hide-loading': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'hide-loading': ''}),
+     {'hide-loading': ''}),
 
     ({'native-scrollbars': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'native-scrollbars': ''}),
+     {'native-scrollbars': ''}),
 
     ({'untrusted-spec': True},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'untrusted-spec': ''}),
+     {'untrusted-spec': ''}),
 
     ({'expand-responses': ['200', '404']},
-     {'spec-url': os.path.join('..', '..', '_specs', 'github.yml'),
-      'expand-responses': '200,404'}),
+     {'expand-responses': '200,404'}),
 ])
 def test_redocjs_page_is_generated(run_sphinx, tmpdir, options, attributes):
     run_sphinx(redoc_overwrite={'opts': options})
@@ -160,13 +150,13 @@ def test_redocjs_page_is_generated(run_sphinx, tmpdir, options, attributes):
     html = tmpdir.join('out').join('api', 'github', 'index.html').read()
     soup = bs4.BeautifulSoup(html, 'html.parser')
 
-    # spec url is passed directly as the first arg to the redoc init
-    del attributes["spec-url"]
-
     assert soup.title.string == 'Github API (v3)'
     assert soup.redoc.attrs == attributes
     assert soup.script.attrs['src'] == os.path.join(
         '..', '..', '_static', 'redoc.js')
+
+    assert os.path.join('..', '..', '_specs', 'github.yml') \
+        in soup.find_all('script')[-1].text
 
 
 def test_embedded_spec(run_sphinx, tmpdir):
