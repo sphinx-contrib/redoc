@@ -50,7 +50,7 @@ do is to:
               'name': 'Example API',
               'page': 'example/index',
               'spec': 'http://example.com/openapi.yml',
-              'opts' {
+              'opts': {
                   'lazy': False,
                   'nowarnings': False,
                   'nohostname': False,
