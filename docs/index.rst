@@ -55,7 +55,7 @@ do is to:
                   'nowarnings': False,
                   'nohostname': False,
                   'required-props-first': True,
-                  'expand-responses': [200, 201],
+                  'expand-responses': ["200", "201"],
               }
           },
       ]
