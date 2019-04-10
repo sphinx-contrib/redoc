@@ -33,6 +33,12 @@ def render(app):
         # relies on them.
         ctx.setdefault('opts', {})
 
+        template_file = ctx.get('template')
+        if template_file is not None:
+            with io.open(template_file, encoding='utf-8') as f:
+                template = jinja2.Template(f.read())
+
+
         # In embed mode, we are going to embed the whole OpenAPI spec into
         # produced HTML. The rationale is very simple: we want to produce
         # browsable HTMLs ready to be used without any web server.
