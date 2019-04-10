@@ -159,6 +159,70 @@ def test_redocjs_page_is_generated(run_sphinx, tmpdir, options, attributes):
         in soup.find_all('script')[-1].text
 
 
+@pytest.mark.parametrize(['options', 'rendered'], [
+    pytest.param(
+        {'lazy-rendering': False,
+         'suppress-warnings': False,
+         'hide-hostname': False},
+        'custom template:\n\n\n\n',
+        id='no-options',
+    ),
+    pytest.param(
+        {'lazy-rendering': True,
+         'suppress-warnings': False,
+         'hide-hostname': False},
+        'custom template:\n\nlazy-rendering\n\n',
+        id='lazy-rendering',
+    ),
+    pytest.param(
+        {'lazy-rendering': False,
+         'suppress-warnings': True,
+         'hide-hostname': False},
+        'custom template:\n\n\nsuppress-warnings\n',
+        id='suppress-warnings',
+    ),
+    pytest.param(
+        {'lazy-rendering': True,
+         'suppress-warnings': True,
+         'hide-hostname': True},
+        'custom template:\n\nlazy-rendering\nsuppress-warnings\nhide-hostname',
+        id='all-enabled',
+    ),
+])
+@pytest.mark.parametrize(['get_template'], [
+    pytest.param(
+        lambda confdir: os.path.join('redoc', 'template.j2'),
+        id='relative',
+    ),
+    pytest.param(
+        lambda confdir: os.path.join(confdir, 'redoc', 'template.j2'),
+        id='absolute',
+    ),
+])
+def test_custom_template(run_sphinx, tmpdir, options, rendered, get_template):
+    tmpdir.mkdir('src', 'redoc')
+    tmpdir.join('src', 'redoc', 'template.j2').write_text(
+        textwrap.dedent(u'''\
+            custom template:
+
+            {{ 'lazy-rendering' if opts['lazy-rendering'] }}
+            {{ 'suppress-warnings' if opts['suppress-warnings'] }}
+            {{ 'hide-hostname' if opts['hide-hostname'] }}
+        '''),
+        encoding='utf-8'
+    )
+
+    run_sphinx(
+        redoc_overwrite={
+            'template': get_template(tmpdir.join('src').strpath),
+            'opts': options,
+        }
+    )
+
+    text = tmpdir.join('out').join('api', 'github', 'index.html').read()
+    assert text == rendered
+
+
 def test_embedded_spec(run_sphinx, tmpdir):
     run_sphinx(redoc_overwrite={'embed': True})
 

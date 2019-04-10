@@ -1,3 +1,8 @@
+1.6.0 (unreleased)
+``````````````````
+
+- Add support for custom ReDoc templates.
+
 1.5.1 (2018-08-05)
 ``````````````````
 
