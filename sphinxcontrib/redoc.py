@@ -41,7 +41,7 @@ def render(app):
             specfile = os.path.join(app.confdir, ctx['spec'])
             with io.open(specfile, encoding='utf-8') as specfp:
                 try:
-                    spec_contents = yaml.load(specfp)
+                    spec_contents = yaml.safe_load(specfp)
                 except ValueError as ver:
                     raise ValueError('Cannot parse spec %r: %s'
                                      % (ctx['spec'], ver))
