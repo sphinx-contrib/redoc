@@ -28,6 +28,7 @@ setup(
     ],
     install_requires=[
         'jinja2 >= 2.4',
+        'jsonschema >= 3.0',
         'sphinx >= 1.5',
         'six >= 1.5',
         'PyYAML >= 3.12',

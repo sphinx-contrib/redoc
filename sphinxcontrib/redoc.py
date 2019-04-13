@@ -12,10 +12,11 @@
 import io
 import os
 import json
-import yaml
 
 import jinja2
+import jsonschema
 import pkg_resources
+import yaml
 
 from six.moves import urllib
 from sphinx.util.osutil import copyfile, ensuredir
@@ -27,12 +28,57 @@ with io.open(os.path.join(here, 'redoc.j2'), 'r', encoding='utf-8') as f:
     template = jinja2.Template(f.read())
 
 
-def render(app):
-    for ctx in app.config.redoc:
-        # Setup options if they are not passed since 'redoc.j2' template
-        # relies on them.
-        ctx.setdefault('opts', {})
+_REDOC_CONF_SCHEMA = {
+    'type': 'array',
+    'items': {
+        'type': 'object',
+        'properties': {
+            'name': {'type': 'string'},
+            'page': {'type': 'string'},
+            'spec': {'type': 'string'},
+            'embed': {'type': 'boolean'},
+            'opts': {
+                'type': 'object',
+                'properties': {
+                    'lazy-rendering': {'type': 'boolean'},
+                    'suppress-warnings': {'type': 'boolean'},
+                    'hide-hostname': {'type': 'boolean'},
+                    'required-props-first': {'type': 'boolean'},
+                    'no-auto-auth': {'type': 'boolean'},
+                    'path-in-middle-panel': {'type': 'boolean'},
+                    'hide-loading': {'type': 'boolean'},
+                    'native-scrollbars': {'type': 'boolean'},
+                    'untrusted-spec': {'type': 'boolean'},
+                    'expand-responses': {
+                        'type': 'array',
+                        'items': {'type': 'string'}
+                    }
+                },
+                'additionalProperties': False,
+            },
+        },
+        'required': ['page', 'spec'],
+        'additionalProperties': False,
+    },
+}
 
+
+def render(app):
+    try:
+        # Settings set in Sphinx's conf.py may contain improper configuration
+        # or typos. In order to prevent misbehaviour or failures deep down the
+        # code, we want to ensure that all required settings are passed and
+        # optional settings has proper type and/or value.
+        jsonschema.validate(app.config.redoc, schema=_REDOC_CONF_SCHEMA)
+    except jsonschema.ValidationError as exc:
+        raise ValueError(
+            'Improper configuration for sphinxcontrib-redoc at %s: %s' % (
+                '.'.join((str(part) for part in exc.path)),
+                exc.message,
+            )
+        )
+
+    for ctx in app.config.redoc:
         # In embed mode, we are going to embed the whole OpenAPI spec into
         # produced HTML. The rationale is very simple: we want to produce
         # browsable HTMLs ready to be used without any web server.
@@ -75,6 +121,7 @@ def render(app):
         # we can pass a template instance to Jinja2 environment and so on.
         # Such little trick allows us to avoid other hacks which require
         # manipulating of Sphinx's 'templates_path' option.
+        ctx.setdefault('opts', {})
         yield ctx['page'], ctx, template
 
 
