@@ -96,9 +96,6 @@ def test_openapi_spec_is_copied(run_sphinx, tmpdir):
 
 
 @pytest.mark.parametrize('options, attributes', [
-    (None,
-     {}),
-
     ({},
      {}),
 
@@ -143,6 +140,9 @@ def test_openapi_spec_is_copied(run_sphinx, tmpdir):
 
     ({'expand-responses': ['200', '404']},
      {'expand-responses': '200,404'}),
+
+    ({'expand-responses': ['200']},
+     {'expand-responses': '200'}),
 ])
 def test_redocjs_page_is_generated(run_sphinx, tmpdir, options, attributes):
     run_sphinx(redoc_overwrite={'opts': options})
@@ -171,3 +171,186 @@ def test_embedded_spec(run_sphinx, tmpdir):
 
     embedded_spec = soup.find(id='spec').get_text()
     assert json.loads(embedded_spec) == spec
+
+
+@pytest.mark.parametrize(['conf', 'error'], [
+    pytest.param(
+        {'spec': 42},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.spec: 42 is not of type 'string'"
+        ),
+        id='spec-int'),
+
+    pytest.param(
+        {'page': 42},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.page: 42 is not of type 'string'"
+        ),
+        id='page-int'),
+
+    pytest.param(
+        {'opts': {'lazy-rendering': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.lazy-rendering: 1 is not of type 'boolean'"
+        ),
+        id='lazy-rendering-int'),
+
+    pytest.param(
+        {'opts': {'lazy-rendering': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.lazy-rendering: 'True' is not of type 'boolean'"
+        ),
+        id='lazy-rendering-str'),
+
+    pytest.param(
+        {'opts': {'suppress-warnings': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.suppress-warnings: 1 is not of type 'boolean'"
+        ),
+        id='suppress-warnings-int'),
+
+    pytest.param(
+        {'opts': {'suppress-warnings': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.suppress-warnings: 'True' is not of type 'boolean'"
+        ),
+        id='suppress-warnings-str'),
+
+    pytest.param(
+        {'opts': {'hide-hostname': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.hide-hostname: 1 is not of type 'boolean'"
+        ),
+        id='hide-hostname-int'),
+
+    pytest.param(
+        {'opts': {'hide-hostname': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.hide-hostname: 'True' is not of type 'boolean'"
+        ),
+        id='hide-hostname-str'),
+
+    pytest.param(
+        {'opts': {'required-props-first': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.required-props-first: 1 is not of type 'boolean'"
+        ),
+        id='required-props-first-int'),
+
+    pytest.param(
+        {'opts': {'required-props-first': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.required-props-first: 'True' is not of type 'boolean'"
+        ),
+        id='required-props-first-str'),
+
+    pytest.param(
+        {'opts': {'no-auto-auth': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.no-auto-auth: 1 is not of type 'boolean'"
+        ),
+        id='no-auto-auth-int'),
+
+    pytest.param(
+        {'opts': {'no-auto-auth': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.no-auto-auth: 'True' is not of type 'boolean'"
+        ),
+        id='no-auto-auth-str'),
+
+    pytest.param(
+        {'opts': {'path-in-middle-panel': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.path-in-middle-panel: 1 is not of type 'boolean'"
+        ),
+        id='path-in-middle-panel-int'),
+
+    pytest.param(
+        {'opts': {'path-in-middle-panel': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.path-in-middle-panel: 'True' is not of type 'boolean'"
+        ),
+        id='path-in-middle-panel-str'),
+
+    pytest.param(
+        {'opts': {'hide-loading': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.hide-loading: 1 is not of type 'boolean'"
+        ),
+        id='hide-loading-int'),
+
+    pytest.param(
+        {'opts': {'hide-loading': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.hide-loading: 'True' is not of type 'boolean'"
+        ),
+        id='hide-loading-str'),
+
+    pytest.param(
+        {'opts': {'native-scrollbars': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.native-scrollbars: 1 is not of type 'boolean'"
+        ),
+        id='native-scrollbars-int'),
+
+    pytest.param(
+        {'opts': {'native-scrollbars': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.native-scrollbars: 'True' is not of type 'boolean'"
+        ),
+        id='native-scrollbars-str'),
+
+    pytest.param(
+        {'opts': {'untrusted-spec': 1}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.untrusted-spec: 1 is not of type 'boolean'"
+        ),
+        id='untrusted-spec-int'),
+
+    pytest.param(
+        {'opts': {'untrusted-spec': 'True'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.untrusted-spec: 'True' is not of type 'boolean'"
+        ),
+        id='untrusted-spec-str'),
+
+    pytest.param(
+        {'opts': {'expand-responses': [200, 404]}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.expand-responses.0: 200 is not of type 'string'"
+        ),
+        id='expand-responses-int-array'),
+
+    pytest.param(
+        {'opts': {'expand-responses': '200'}},
+        (
+            "Improper configuration for sphinxcontrib-redoc at "
+            "0.opts.expand-responses: '200' is not of type 'array'"
+        ),
+        id='expand-responses-str'),
+])
+def test_conf_validation(run_sphinx, tmpdir, conf, error):
+    with pytest.raises(Exception) as excinfo:
+        run_sphinx(redoc_overwrite=conf)
+    assert error == str(excinfo.value)
