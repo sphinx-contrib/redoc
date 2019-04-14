@@ -82,6 +82,16 @@ do is to:
     The ``spec`` must be an ``UTF-8`` encoded JSON on YAML OpenAPI spec;
     embedding an external ``spec`` is currently not supported.
 
+  ``template``
+    Non default template to use to render ReDoc HTML page. Must be either
+    passed, or omitted.
+
+    .. warning::
+
+       When custom template is used, settings such as ``name``, ``embed`` or
+       ``opts`` may not work if they are not supported by the template. Use
+       custom templates with caution.
+
   ``opts``
     An optional dictionary with some of ReDoc settings that might be
     useful. Here they are

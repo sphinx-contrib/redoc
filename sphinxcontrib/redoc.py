@@ -22,12 +22,7 @@ from six.moves import urllib
 from sphinx.util.osutil import copyfile, ensuredir
 
 
-here = os.path.abspath(os.path.dirname(__file__))
-
-with io.open(os.path.join(here, 'redoc.j2'), 'r', encoding='utf-8') as f:
-    template = jinja2.Template(f.read())
-
-
+_HERE = os.path.abspath(os.path.dirname(__file__))
 _REDOC_CONF_SCHEMA = {
     'type': 'array',
     'items': {
@@ -37,6 +32,7 @@ _REDOC_CONF_SCHEMA = {
             'page': {'type': 'string'},
             'spec': {'type': 'string'},
             'embed': {'type': 'boolean'},
+            'template': {'type': 'string'},
             'opts': {
                 'type': 'object',
                 'properties': {
@@ -79,6 +75,14 @@ def render(app):
         )
 
     for ctx in app.config.redoc:
+        if 'template' in ctx:
+            template_path = os.path.join(app.confdir, ctx['template'])
+        else:
+            template_path = os.path.join(_HERE, 'redoc.j2')
+
+        with io.open(template_path, encoding='utf-8') as f:
+            template = jinja2.Template(f.read())
+
         # In embed mode, we are going to embed the whole OpenAPI spec into
         # produced HTML. The rationale is very simple: we want to produce
         # browsable HTMLs ready to be used without any web server.
@@ -131,7 +135,7 @@ def assets(app, exception):
     # in case of failure.
     if not exception:
         copyfile(
-            os.path.join(here, 'redoc.js'),
+            os.path.join(_HERE, 'redoc.js'),
             os.path.join(app.builder.outdir, '_static', 'redoc.js'))
 
         # It's hard to keep up with ReDoc releases, especially when you don't
