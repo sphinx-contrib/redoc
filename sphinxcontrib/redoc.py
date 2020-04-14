@@ -137,7 +137,7 @@ def assets(app, exception):
         build_dir = os.path.join(app.builder.outdir, '_static')
         redoc_js = os.path.join(build_dir, 'redoc.js')
         os.makedirs(build_dir, exist_ok=True)
-        copyfile(os.path.join(here, 'redoc.js'), redoc_js)
+        copyfile(os.path.join(_HERE, 'redoc.js'), redoc_js)
 
         # It's hard to keep up with ReDoc releases, especially when you don't
         # watch them closely. Hence, there should be a way to override built-in
