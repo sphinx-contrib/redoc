@@ -134,17 +134,16 @@ def assets(app, exception):
     # need to either ensure its existence here or do not try to copy  assets
     # in case of failure.
     if not exception:
-        copyfile(
-            os.path.join(_HERE, 'redoc.js'),
-            os.path.join(app.builder.outdir, '_static', 'redoc.js'))
+        build_dir = os.path.join(app.builder.outdir, '_static')
+        redoc_js = os.path.join(build_dir, 'redoc.js')
+        os.makedirs(build_dir, exist_ok=True)
+        copyfile(os.path.join(here, 'redoc.js'), redoc_js)
 
         # It's hard to keep up with ReDoc releases, especially when you don't
         # watch them closely. Hence, there should be a way to override built-in
         # ReDoc bundle with some upstream one.
         if app.config.redoc_uri:
-            urllib.request.urlretrieve(
-                app.config.redoc_uri,
-                os.path.join(app.builder.outdir, '_static', 'redoc.js'))
+            urllib.request.urlretrieve(app.config.redoc_uri, redoc_js)
 
 
 def setup(app):
