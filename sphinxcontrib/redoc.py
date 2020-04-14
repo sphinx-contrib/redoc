@@ -19,6 +19,7 @@ import pkg_resources
 import yaml
 
 from six.moves import urllib
+from sphinx.util.fileutil import copy_asset
 from sphinx.util.osutil import copyfile, ensuredir
 
 
@@ -134,17 +135,17 @@ def assets(app, exception):
     # need to either ensure its existence here or do not try to copy  assets
     # in case of failure.
     if not exception:
-        build_dir = os.path.join(app.builder.outdir, '_static')
-        redoc_js = os.path.join(build_dir, 'redoc.js')
-        if not os.path.isdir(build_dir):
-            os.makedirs(build_dir)
-        copyfile(os.path.join(_HERE, 'redoc.js'), redoc_js)
+        copy_asset(
+            os.path.join(_HERE, 'redoc.js'),
+            os.path.join(app.builder.outdir, '_static', 'redoc.js'))
 
         # It's hard to keep up with ReDoc releases, especially when you don't
         # watch them closely. Hence, there should be a way to override built-in
         # ReDoc bundle with some upstream one.
         if app.config.redoc_uri:
-            urllib.request.urlretrieve(app.config.redoc_uri, redoc_js)
+            urllib.request.urlretrieve(
+                app.config.redoc_uri,
+                os.path.join(app.builder.outdir, '_static', 'redoc.js'))
 
 
 def setup(app):
