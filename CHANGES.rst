@@ -1,8 +1,10 @@
-1.6.0 (unreleased)
+1.6.0 (2020-04-17)
 ``````````````````
 
 - Add support for custom ReDoc templates. [:pr:`27`]
 - Drop Python 3.4 support. [:pr:`34`]
+- Fix issue when the extension may trigger build failure when other
+  than html builders are used (e.g. linkcheck). [:pr:`32`]
 
 1.5.1 (2018-08-05)
 ``````````````````
