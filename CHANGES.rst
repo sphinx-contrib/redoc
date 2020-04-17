@@ -1,7 +1,8 @@
 1.6.0 (unreleased)
 ``````````````````
 
-- Add support for custom ReDoc templates.
+- Add support for custom ReDoc templates. [:pr:`27`]
+- Drop Python 3.4 support. [:pr:`34`]
 
 1.5.1 (2018-08-05)
 ``````````````````

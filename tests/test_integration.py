@@ -156,7 +156,7 @@ def test_redocjs_page_is_generated(run_sphinx, tmpdir, options, attributes):
         '..', '..', '_static', 'redoc.js')
 
     assert os.path.join('..', '..', '_specs', 'github.yml') \
-        in soup.find_all('script')[-1].text
+        in soup.find_all('script')[-1].string
 
 
 @pytest.mark.parametrize(['options', 'rendered'], [
@@ -233,7 +233,7 @@ def test_embedded_spec(run_sphinx, tmpdir):
     with io.open(spec, encoding='utf-8') as f:
         spec = yaml.safe_load(f)
 
-    embedded_spec = soup.find(id='spec').get_text()
+    embedded_spec = soup.find(id='spec').string
     assert json.loads(embedded_spec) == spec
 
 
