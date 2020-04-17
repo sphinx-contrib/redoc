@@ -137,7 +137,7 @@ def assets(app, exception):
     if not exception:
         copy_asset(
             os.path.join(_HERE, 'redoc.js'),
-            os.path.join(app.builder.outdir, '_static', 'redoc.js'))
+            os.path.join(app.builder.outdir, '_static'))
 
         # It's hard to keep up with ReDoc releases, especially when you don't
         # watch them closely. Hence, there should be a way to override built-in
