@@ -52,7 +52,7 @@ do is to:
               'spec': 'http://example.com/openapi.yml',
               'opts': {
                   'lazy': False,
-                  'nowarnings': False,
+                  'suppress-warnings': False,
                   'nohostname': False,
                   'required-props-first': True,
                   'expand-responses': ["200", "201"],
