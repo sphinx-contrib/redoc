@@ -151,7 +151,9 @@ def test_redocjs_page_is_generated(run_sphinx, tmpdir, options, attributes):
     soup = bs4.BeautifulSoup(html, 'html.parser')
 
     assert soup.title.string == 'Github API (v3)'
-    assert soup.redoc.attrs == attributes
+    attrs = soup.redoc.attrs
+    attrs.pop('id')
+    assert attrs == attributes
     assert soup.script.attrs['src'] == os.path.join(
         '..', '..', '_static', 'redoc.js')
 

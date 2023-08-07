@@ -23,6 +23,13 @@ small first step:
 Usage
 -----
 
+.. note::
+
+  For info about ``redoc`` directive, please visit a :ref:`redoc_directive_doc`.
+
+  .. versionadded:: 1.7.0
+
+
 The whole configuration is done via Sphinx's ``conf.py``. All you have to
 do is to:
 
@@ -168,3 +175,8 @@ Links
 .. _ReDoc: https://github.com/Rebilly/ReDoc
 .. _the proof: api/github/
 .. _sphinxcontrib-openapi: https://sphinxcontrib-openapi.readthedocs.io/
+
+.. toctree::
+  :hidden:
+
+  redoc_directive

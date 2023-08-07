@@ -1,0 +1,27 @@
+<redoc id="{{ page }}"
+    {{ 'lazy-rendering' if opts['lazy-rendering'] -}}
+    {{ 'suppress-warnings' if opts['suppress-warnings'] -}}
+    {{ 'hide-hostname' if opts['hide-hostname'] -}}
+    {{ 'required-props-first' if opts['required-props-first'] -}}
+    {{ 'no-auto-auth' if opts['no-auto-auth'] -}}
+    {{ 'path-in-middle-panel' if opts['path-in-middle-panel'] -}}
+    {{ 'hide-loading' if opts['hide-loading'] -}}
+    {{ 'native-scrollbars' if opts['native-scrollbars'] -}}
+    {{ 'untrusted-spec' if opts['untrusted-spec'] -}}
+    {{ 'expand-responses="%s"' % ','.join(opts['expand-responses']) if opts['expand-responses'] -}}>
+</redoc>
+
+<script src="{{ pathto('_static/redoc.js', 1) }}"></script>
+{% if embed %}
+<script type="application/json" id="spec">
+    {{ spec }}
+</script>
+{% endif %}
+<script>
+    {% if embed -%}
+    var spec = JSON.parse(document.getElementById("spec").innerHTML);
+    {%- else -%}
+    var spec = "{{ pathto(spec, 1) }}";
+    {%- endif %}
+    Redoc.init(spec, {}, document.getElementById("{{ page }}"));
+</script>
