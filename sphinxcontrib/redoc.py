@@ -9,16 +9,15 @@
     :license: BSD, see LICENSE for details.
 """
 
-import io
 import os
 import json
+import urllib
 
 import jinja2
 import jsonschema
 import pkg_resources
 import yaml
 
-from six.moves import urllib
 from sphinx.util.fileutil import copy_asset
 from sphinx.util.osutil import copyfile, ensuredir
 
@@ -69,8 +68,8 @@ def render(app):
         jsonschema.validate(app.config.redoc, schema=_REDOC_CONF_SCHEMA)
     except jsonschema.ValidationError as exc:
         raise ValueError(
-            'Improper configuration for sphinxcontrib-redoc at %s: %s' % (
-                '.'.join((str(part) for part in exc.path)),
+            'Improper configuration for sphinxcontrib-redoc at {}: {}'.format(
+                '.'.join(str(part) for part in exc.path),
                 exc.message,
             )
         )
@@ -81,7 +80,7 @@ def render(app):
         else:
             template_path = os.path.join(_HERE, 'redoc.j2')
 
-        with io.open(template_path, encoding='utf-8') as f:
+        with open(template_path, encoding='utf-8') as f:
             template = jinja2.Template(f.read())
 
         # In embed mode, we are going to embed the whole OpenAPI spec into
@@ -90,7 +89,7 @@ def render(app):
         if ctx.get('embed') is True:
             # Parse & dump the spec to have it as properly formatted json
             specfile = os.path.join(app.confdir, ctx['spec'])
-            with io.open(specfile, encoding='utf-8') as specfp:
+            with open(specfile, encoding='utf-8') as specfp:
                 try:
                     spec_contents = yaml.safe_load(specfp)
                 except ValueError as ver:
