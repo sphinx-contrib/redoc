@@ -3,6 +3,7 @@
 
 - Drop support for Python 2.7, 3.5, 3.6.
 - Add support for Python 3.9, 3.10, 3.11, 3.12.
+- Switch to implicit (native) namespace for ``sphinxcontrib``.
 
 
 1.6.0 (2020-04-17)

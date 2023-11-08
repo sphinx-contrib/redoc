@@ -1,7 +1,7 @@
 import os
 
 from io import open
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 here = os.path.dirname(__file__)
@@ -19,7 +19,7 @@ setup(
     keywords='sphinx openapi swagger rest api renderer docs redoc',
     author='Ihor Kalnytskyi',
     author_email='ihor@kalnytskyi.com',
-    packages=find_packages(exclude=['docs', 'tests*']),
+    packages=['sphinxcontrib.redoc'],
     include_package_data=True,
     zip_safe=False,
     use_scm_version=True,
@@ -47,5 +47,4 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
     ],
-    namespace_packages=['sphinxcontrib'],
 )
