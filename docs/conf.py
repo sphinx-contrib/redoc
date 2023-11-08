@@ -13,8 +13,8 @@ master_doc = 'index'
 exclude_patterns = ['_build']
 pygments_style = 'sphinx'
 extlinks = {
-    'issue': ('https://github.com/ikalnytskyi/sphinxcontrib-redoc/issues/%s', '#'),
-    'pr': ('https://github.com/ikalnytskyi/sphinxcontrib-redoc/pull/%s', 'PR #'),
+    'issue': ('https://github.com/ikalnytskyi/sphinxcontrib-redoc/issues/%s', '#%s'),
+    'pr': ('https://github.com/ikalnytskyi/sphinxcontrib-redoc/pull/%s', 'PR #%s'),
 }
 redoc = [
     {
